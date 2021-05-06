@@ -15,10 +15,16 @@ server.post("/api/users", async (req, res) => {
       bio: req.body.bio,
     });
     res.status(201).send(user);
-  } else {
+  } else if (req.body.name || req.body.bio) {
     res
       .status(400)
       .send({ message: "Please provide name and bio for the user" });
+  } else {
+    res
+      .status(500)
+      .send({
+        message: "There was an error while saving the user to the database",
+      });
   }
 });
 // GET api/users
