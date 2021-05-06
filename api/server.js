@@ -8,7 +8,19 @@ server.use(express.json());
 server.use(cors());
 
 // POST api/users
-server.post("/api/users", (req, res) => {});
+server.post("/api/users", async (req, res) => {
+  if (req.body.name && req.body.bio) {
+    const user = await model.insert({
+      name: req.body.name,
+      bio: req.body.bio,
+    });
+    res.status(201).send(user);
+  } else {
+    res
+      .status(400)
+      .send({ message: "Please provide name and bio for the user" });
+  }
+});
 // GET api/users
 server.get("/api/users", async (req, res) => {
   const user = await model.find();
@@ -22,10 +34,10 @@ server.get("/api/users", async (req, res) => {
   }
 });
 // GET api/users/:id
-server.get("/api/users/:id", (req, res) => {});
+server.get("/api/users/:id", async (req, res) => {});
 // DELETE api/users/:id
-server.delete("/api/users/:id", (req, res) => {});
+server.delete("/api/users/:id", async (req, res) => {});
 // PUT api/users/:id
-server.put("/api/users/:id", (req, res) => {});
+server.put("/api/users/:id", async (req, res) => {});
 
 module.exports = server;
