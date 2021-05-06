@@ -37,9 +37,39 @@ server.get("/api/users", async (req, res) => {
   }
 });
 // GET api/users/:id
-server.get("/api/users/:id", async (req, res) => {});
+server.get("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await model.findById(id);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res
+        .status(404)
+        .send({ message: "The user with the specified ID does not exist" });
+    }
+  } catch {
+    res
+      .status(500)
+      .send({ message: "The user information could not be retrieved" });
+  }
+});
 // DELETE api/users/:id
-server.delete("/api/users/:id", async (req, res) => {});
+server.delete("/api/users/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const user = await model.remove(id);
+    if (user) {
+      res.status(200).send(user);
+    } else {
+      res
+        .status(404)
+        .send({ message: "The user with the specified ID does not exist" });
+    }
+  } catch {
+    res.status(500).send({ message: "The user could not be removed" });
+  }
+});
 // PUT api/users/:id
 server.put("/api/users/:id", async (req, res) => {});
 
