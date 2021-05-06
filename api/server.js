@@ -20,23 +20,20 @@ server.post("/api/users", async (req, res) => {
       .status(400)
       .send({ message: "Please provide name and bio for the user" });
   } else {
-    res
-      .status(500)
-      .send({
-        message: "There was an error while saving the user to the database",
-      });
+    res.status(500).send({
+      message: "There was an error while saving the user to the database",
+    });
   }
 });
 // GET api/users
 server.get("/api/users", async (req, res) => {
-  const user = await model.find();
-  if (!user) {
-    res.status(500).send({
-      message: "There was an error while saving the user to the database",
-    });
-  } else {
-    res.status(200);
-    res.send(user);
+  try {
+    const user = await model.find();
+    res.status(200).send(user);
+  } catch {
+    res
+      .status(500)
+      .send({ message: "The users information could not be retrieved" });
   }
 });
 // GET api/users/:id
